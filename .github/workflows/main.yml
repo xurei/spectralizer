@@ -96,7 +96,7 @@ jobs:
           mkdir build && cd build
           echo "=> Building obs-studio.."
 
-          cmake .. -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11 -DQTDIR="/tmp/obsdeps" -DDepsPath="/tmp/obsdeps" \
+          cmake .. -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11 -DQTDIR="/tmp/obsdeps" -DBUILD_BROWSER="OFF" -DDepsPath="/tmp/obsdeps" \
             -DBUILD_CAPTIONS=OFF -DDISABLE_PLUGINS=true -DENABLE_SCRIPTING=0
           make -j4
       - name: Configure and build plugin
@@ -109,6 +109,7 @@ jobs:
           mkdir -p build && cd build
           cmake .. \
             -DQTDIR=/tmp/obsdeps \
+            -DBUILD_BROWSER="OFF" \
             -DLIBOBS_INCLUDE_DIR=${{ github.workspace }}/obs-studio/libobs \
             -DLIBOBS_LIB=${{ github.workspace }}/obs-studio/build/libobs/libobs.dylib \
             -DOBS_FRONTEND_LIB:STRING="${{ github.workspace }}/obs-studio/build/UI/obs-frontend-api/libobs-frontend-api.dylib" \
@@ -119,8 +120,10 @@ jobs:
         if: success()
         shell: bash
         run: |
-          curl -L -O https://s3-us-west-2.amazonaws.com/obs-nightly/Packages.pkg
-          sudo installer -pkg ./Packages.pkg -target /
+          curl -L -O http://s.sudre.free.fr/Software/files/Packages.dmg
+          sudo hdiutil attach Packages.dmg
+          sudo installer -pkg "/Volumes/Packages 1.2.9/packages/Packages.pkg" -target /
+          sudo hdiutil detach "/Volumes/Packages 1.2.9"
       - name: Package
         working-directory: ${{ github.workspace }}
         if: success()
@@ -143,7 +146,7 @@ jobs:
         uses: actions/upload-artifact@v2-preview
         with:
           name: '${{ env.project-name }}.${{ env.GIT_TAG }}.installer.macos'
-          path: ./package/*.pkg 
+          path: ./package/*.pkg
   build-linux:
     name: 'Linux 64bit'
     runs-on: ubuntu-latest
@@ -151,7 +154,7 @@ jobs:
       obs-studio-version: 26.0.2
       project-name: spectralizer
       project-git: spectralizer
-      maintainer: uni@vrsal.cf 
+      maintainer: uni@vrsal.cf
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -214,7 +217,7 @@ jobs:
           export GIT_HASH=$(git rev-parse --short HEAD)
           export GIT_TAG=$(git describe --tags --abbrev=0)
           export PKG_VERSION="1-$GIT_TAG-$GIT_HASH-git"
-          
+
           [[ "$GITHUB_REF" =~ "^refs/tags/" ]] && export PKG_VERSION="$BRANCH_SHORT_NAME"
           cd ${{github.workspace}}/build
           echo "Packaging version ${PKG_VERSION}"
@@ -242,7 +245,7 @@ jobs:
     runs-on: [windows-latest]
     env:
       QT_VERSION: '5.10.1'
-      WINDOWS_DEPS_VERSION: '2017'
+      WINDOWS_DEPS_VERSION: '2019'
       CMAKE_GENERATOR: "Visual Studio 16 2019"
       CMAKE_SYSTEM_VERSION: "10.0"
       obs-studio-version: 26.0.2
@@ -309,7 +312,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path .\build32
           cd .\build32
-          cmake -G "${{ env.CMAKE_GENERATOR }}" -A Win32 -DCMAKE_SYSTEM_VERSION="${{ env.CMAKE_SYSTEM_VERSION }}" -DQTDIR="${{ github.workspace }}\cmbuild\QT\${{ env.QT_VERSION }}\msvc2017" -DDepsPath="${{ github.workspace }}\cmbuild\deps\win32" -DBUILD_CAPTIONS=YES -DCOPIED_DEPENDENCIES=NO -DCOPY_DEPENDENCIES=YES ..
+          cmake -G "${{ env.CMAKE_GENERATOR }}" -A Win32 -DCMAKE_SYSTEM_VERSION="${{ env.CMAKE_SYSTEM_VERSION }}" -DBUILD_BROWSER="OFF" -DQTDIR="${{ github.workspace }}\cmbuild\QT\${{ env.QT_VERSION }}\msvc2017" -DDepsPath="${{ github.workspace }}\cmbuild\deps\win32" -DBUILD_CAPTIONS=YES -DCOPIED_DEPENDENCIES=NO -DCOPY_DEPENDENCIES=YES ..
       - name: 'Build OBS-Studio 32-bit'
         if: steps.build-cache-obs-32.outputs.cache-hit != 'true'
         working-directory: ${{ github.workspace }}/obs-studio
@@ -333,7 +336,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path .\build64
           cd .\build64
-          cmake -G "${{ env.CMAKE_GENERATOR }}" -A x64 -DCMAKE_SYSTEM_VERSION="${{ env.CMAKE_SYSTEM_VERSION }}" -DQTDIR="${{ github.workspace }}\cmbuild\QT\${{ env.QT_VERSION }}\msvc2017_64" -DDepsPath="${{ github.workspace }}\cmbuild\deps\win64" -DBUILD_CAPTIONS=YES -DCOPIED_DEPENDENCIES=NO -DCOPY_DEPENDENCIES=YES ..
+          cmake -G "${{ env.CMAKE_GENERATOR }}" -A x64 -DCMAKE_SYSTEM_VERSION="${{ env.CMAKE_SYSTEM_VERSION }}" -DBUILD_BROWSER="OFF" -DQTDIR="${{ github.workspace }}\cmbuild\QT\${{ env.QT_VERSION }}\msvc2017_64" -DDepsPath="${{ github.workspace }}\cmbuild\deps\win64" -DBUILD_CAPTIONS=YES -DCOPIED_DEPENDENCIES=NO -DCOPY_DEPENDENCIES=YES ..
       - name: 'Build OBS-Studio 64-bit'
         if: steps.build-cache-obs-64.outputs.cache-hit != 'true'
         working-directory: ${{ github.workspace }}/obs-studio
@@ -346,6 +349,7 @@ jobs:
           mkdir .\build64
           cd .\build64
           cmake -G "${{ env.CMAKE_GENERATOR }}" -A x64 -DCMAKE_SYSTEM_VERSION="${{ env.CMAKE_SYSTEM_VERSION }}" `
+            -DBUILD_BROWSER="OFF" `
             -DQTDIR="${{ github.workspace }}\cmbuild\QT\${{ env.QT_VERSION }}\msvc2017_64" `
             -DDepsPath="${{ github.workspace }}\cmbuild\deps\win64" `
             -DLibObs_DIR="${{ github.workspace }}\obs-studio\build64\libobs" `
@@ -361,6 +365,7 @@ jobs:
           mkdir .\build32
           cd .\build32
           cmake -G "${{ env.CMAKE_GENERATOR }}" -A Win32 -DCMAKE_SYSTEM_VERSION="${{ env.CMAKE_SYSTEM_VERSION }}" `
+          -DBUILD_BROWSER="OFF" `
           -DQTDIR="${{ github.workspace }}\cmbuild\QT\${{ env.QT_VERSION }}\msvc2017" `
           -DDepsPath="${{ github.workspace }}\cmbuild\deps\win32" `
           -DLibObs_DIR="${{ github.workspace }}\obs-studio\build32\libobs" `
@@ -382,14 +387,14 @@ jobs:
           mkdir release\obs-plugins\64bit
           mkdir release\obs-plugins\32bit
           mkdir release\data\obs-plugins\${{ env.project-name }}\
-          
+
           robocopy .\build64\RelWithDebInfo .\release\obs-plugins\64bit\ ${{ env.project-name }}.dll ${{ env.project-name }}.pdb
           robocopy .\build32\RelWithDebInfo .\release\obs-plugins\32bit\ ${{ env.project-name }}.dll ${{ env.project-name }}.pdb
-          robocopy .\fftw3\bin\64bit\ .\release\obs-plugins\64bit\ libfftw3-3.dll 
+          robocopy .\fftw3\bin\64bit\ .\release\obs-plugins\64bit\ libfftw3-3.dll
           robocopy .\fftw3\bin\32bit\ .\release\obs-plugins\32bit\ libfftw3-3.dll
           robocopy /E .\data .\release\data\obs-plugins\${{ env.project-name }}
           robocopy .\package .\release README.txt
-          
+
           cd ${{ github.workspace }}
           iscc .\package\installer-Windows.iss /O. /F"${{ env.project-name }}.${{ env.GIT_TAG }}.installer.windows"
       - name: 'Publish Windows binary'
