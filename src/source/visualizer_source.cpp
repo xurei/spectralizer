@@ -95,6 +95,9 @@ void visualizer_source::update(obs_data_t *settings)
     m_config.offset = obs_data_get_double(settings, S_OFFSET) / 180.f * M_PI;
     m_config.padding = obs_data_get_double(settings, S_PADDING) / 100.f; // to %
 
+    m_config.udp_ip = obs_data_get_string(settings, S_UDP_IP);
+    m_config.udp_port = obs_data_get_int(settings, S_UDP_PORT);
+
 #ifdef LINUX
     m_config.auto_clear = obs_data_get_bool(settings, S_AUTO_CLEAR);
 
@@ -447,6 +450,11 @@ obs_properties_t *get_properties_for_visualiser(void *data)
     d.list = src;
     d.vis = reinterpret_cast<visualizer_source *>(data);
     obs_enum_sources(add_source, &d);
+
+    /* UDP Settings */
+    auto *udp_ip = obs_properties_add_text(props, S_UDP_IP, T_UDP_IP, OBS_TEXT_DEFAULT);
+    auto udp_port = obs_properties_add_int(props, S_UDP_PORT, T_UDP_PORT, 1024, UINT16_MAX, 1);
+
     return props;
 }
 

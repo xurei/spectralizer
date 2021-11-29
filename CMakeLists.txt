@@ -106,6 +106,8 @@ if(WIN32)
         "${LIBOBS_INCLUDE_DIR}"
     )
 
+    target_link_libraries(${CMAKE_PROJECT_NAME} wsock32 ws2_32)
+
     target_link_libraries(${CMAKE_PROJECT_NAME}
         "${OBS_FRONTEND_LIB}"
     )

@@ -81,6 +81,7 @@ spectrum_visualizer::spectrum_visualizer(source::config *cfg)
       m_fftw_plan_right(nullptr),
       m_silent_runs(0u)
 {
+    sock = socket(AF_INET, SOCK_DGRAM, 0);
 }
 
 spectrum_visualizer::~spectrum_visualizer()
@@ -89,6 +90,12 @@ spectrum_visualizer::~spectrum_visualizer()
     bfree(m_fftw_input_right);
     bfree(m_fftw_output_left);
     bfree(m_fftw_output_right);
+
+    #ifdef WIN32
+    closesocket(sock);
+    #else
+    close(sock);
+    #endif
 }
 
 void spectrum_visualizer::update()
@@ -194,6 +201,29 @@ void spectrum_visualizer::tick(float seconds)
         fftw_destroy_plan(m_fftw_plan_left);
         if (m_cfg->stereo)
             fftw_destroy_plan(m_fftw_plan_right);
+
+        if (udp_threshold == 0) {
+            unsigned char *data = new unsigned char[m_bars_left.size()];
+            for (size_t i = 0; i < m_bars_left.size(); i++) {
+                data[i] = (unsigned char)m_bars_left[i];
+            }
+
+            sockaddr_in destination;
+            destination.sin_family = AF_INET;
+            destination.sin_port = htons(m_cfg->udp_port);
+            destination.sin_addr.s_addr = inet_addr(m_cfg->udp_ip);
+
+            sendto(sock, (const char *)data, m_bars_left.size(), 0, reinterpret_cast<sockaddr*>(&destination), sizeof(destination));
+            //blog(LOG_INFO, "[spectralizer] UDP %i", err.value());
+
+            delete[] data;
+        }
+        udp_threshold++;
+        if (udp_threshold >= 1) {
+            udp_threshold = 0;
+        }
+
+
     } else {
         m_sleeping = true;
     }

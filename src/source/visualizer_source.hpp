@@ -85,6 +85,11 @@ struct config {
     int16_t stereo_space = 0;
     double falloff_weight = defaults::falloff_weight;
     double gravity = defaults::gravity;
+
+    /* UDP Settings */
+    const char *udp_ip = defaults::udp_ip;
+    uint16_t udp_port = defaults::udp_port;
+
 };
 
 class visualizer_source {

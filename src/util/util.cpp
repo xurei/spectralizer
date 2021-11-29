@@ -69,6 +69,9 @@ const char *audio_source                                  = "none";
 const bool use_auto_scale                                 = true;
 const double scale_boost                                  = 0.0;
 const double scale_size                                   = 1.0;
+
+const char *udp_ip                                        = "127.0.0.1";
+const uint16_t udp_port                                   = 28451;
 }
 
 namespace constants {

@@ -17,6 +17,17 @@
  *************************************************************************/
 
 #pragma once
+#ifdef WIN32
+#define NOMINMAX 1
+#include <Winsock2.h>
+#include <Ws2tcpip.h>
+#else
+#include <arpa/inet.h> // htons, inet_addr
+#include <netinet/in.h> // sockaddr_in
+#include <sys/types.h> // uint16_t
+#include <sys/socket.h> // socket, sendto
+#include <unistd.h> // close
+#endif
 #include "../util.hpp"
 #include "audio_visualizer.hpp"
 #include <fftw3.h>
@@ -55,6 +66,9 @@ class spectrum_visualizer : public audio_visualizer {
     doublev m_frequency_constants_per_bin;
 
     uint64_t m_silent_runs; /* determines sleep state */
+
+    int sock;
+    int udp_threshold = 0;
 
     bool prepare_fft_input(pcm_stereo_sample *buffer, uint32_t sample_size, double *fftw_input,
                            channel_mode channel_mode);

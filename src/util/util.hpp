@@ -92,6 +92,8 @@
 #define T_CORNER_ROUNDING               T_("Spectralizer.Corner.Rounding")
 #define T_CORNER_RADIUS                 T_("Spectralizer.Corner.Radius")
 #define T_CORNER_POINTS                 T_("Spectralizer.Corner.Points")
+#define T_UDP_IP                        T_("Spectralizer.UDP.IP")
+#define T_UDP_PORT                      T_("Spectralizer.UDP.Port")
 
 #define S_EXPONENT_ENABLED              "boost_enabled"
 #define S_EXPONENT                      "boost"
@@ -129,6 +131,8 @@
 #define S_CORNER_ROUNDING               "round_corners"
 #define S_CORNER_RADIUS                 "corner_radius"
 #define S_CORNER_POINTS                 "corner_points"
+#define S_UDP_IP                        T_("udp_ip")
+#define S_UDP_PORT                      T_("udp_port")
 
 enum visual_mode
 {
@@ -228,6 +232,9 @@ namespace defaults {
     extern const bool           use_auto_scale;
     extern const double         scale_boost;
     extern const double         scale_size;
+
+    extern const char *udp_ip;
+    extern const uint16_t udp_port;
 };
 
 namespace constants {
