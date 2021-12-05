@@ -83,7 +83,7 @@ spectrum_visualizer::spectrum_visualizer(source::config *cfg)
 {
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     int one = 1;
-    setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &one, 4);
+    setsockopt(sock, SOL_SOCKET, SO_BROADCAST, (const char *)(&one), 4);
 }
 
 spectrum_visualizer::~spectrum_visualizer()
