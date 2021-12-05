@@ -82,6 +82,8 @@ spectrum_visualizer::spectrum_visualizer(source::config *cfg)
       m_silent_runs(0u)
 {
     sock = socket(AF_INET, SOCK_DGRAM, 0);
+    int one = 1;
+    setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &one, 4);
 }
 
 spectrum_visualizer::~spectrum_visualizer()
