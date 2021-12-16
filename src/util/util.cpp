@@ -36,7 +36,7 @@ const double log_freq_hpf_curve_max                       = 100.0;
 const uint32_t log_freq_quality_fast_detail_mul           = 2;
 const uint32_t log_freq_quality_precise_detail_mul        = 8;
 
-const uint16_t detail                                     = 32,
+const uint16_t detail                                     = 4,
                cx                                         = 50,
                cy                                         = 50,
                fps                                        = 30;
@@ -54,9 +54,9 @@ const uint32_t sgs_points                                 = 3, /* Should be a od
 
 const double mcat_smooth                                  = 1.5;
 
-const uint16_t bar_space                                  = 2,
-               bar_width                                  = 5,
-               bar_height                                 = 100,
+const uint16_t bar_space                                  = 0,
+               bar_width                                  = 1,
+               bar_height                                 = 12,
                bar_min_height                             = 5,
                corner_points                              = 5;
 
@@ -66,9 +66,9 @@ const enum wire_mode wire_mode                            = WM_THIN;
 const char *fifo_path                                     = "/tmp/mpd.fifo";
 const char *audio_source                                  = "none";
 
-const bool use_auto_scale                                 = true;
+const bool use_auto_scale                                 = false;
 const double scale_boost                                  = 0.0;
-const double scale_size                                   = 1.0;
+const double scale_size                                   = 0.016;
 
 const char *udp_ip                                        = "127.0.0.1";
 const uint16_t udp_port                                   = 28451;

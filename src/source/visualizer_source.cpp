@@ -147,7 +147,7 @@ void visualizer_source::tick(float seconds)
 
 void visualizer_source::render(gs_effect_t *effect)
 {
-    UNUSED_PARAMETER(effect);
+    /*UNUSED_PARAMETER(effect);
     if (m_visualizer) {
         m_config.value_mutex.lock();
         gs_effect_t *solid = obs_get_base_effect(OBS_EFFECT_SOLID);
@@ -166,7 +166,7 @@ void visualizer_source::render(gs_effect_t *effect)
         gs_technique_end_pass(tech);
         gs_technique_end(tech);
         m_config.value_mutex.unlock();
-    }
+    }*/
 }
 
 static bool filter_changed(obs_properties_t *props, obs_property_t *, obs_data_t *data)
@@ -311,79 +311,74 @@ obs_properties_t *get_properties_for_visualiser(void *data)
     UNUSED_PARAMETER(data);
     obs_properties_t *props = obs_properties_create();
 
-    auto *mode =
+    /*auto *mode =
         obs_properties_add_list(props, S_SOURCE_MODE, T_SOURCE_MODE, OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
     obs_property_list_add_int(mode, T_MODE_BARS, (int)VM_BARS);
     obs_property_list_add_int(mode, T_MODE_CIRCLE_BARS, (int)VM_CIRCULAR_BARS);
     obs_property_list_add_int(mode, T_MODE_WIRE, (int)VM_WIRE);
-    obs_property_set_modified_callback(mode, visual_mode_changed);
+    obs_property_set_modified_callback(mode, visual_mode_changed);*/
 
     auto *src =
         obs_properties_add_list(props, S_AUDIO_SOURCE, T_AUDIO_SOURCE, OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
-    auto *filter =
-        obs_properties_add_list(props, S_FILTER_MODE, T_FILTER_MODE, OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
+    /*auto *filter =
+        obs_properties_add_list(props, S_FILTER_MODE, T_FILTER_MODE, OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);*/
 
-    obs_property_set_modified_callback(filter, filter_changed);
+    //obs_property_set_modified_callback(filter, filter_changed);
     obs_property_set_modified_callback(src, source_changed);
 
-    obs_property_list_add_int(filter, T_FILTER_NONE, (int)SM_NONE);
-    obs_property_list_add_int(filter, T_FILTER_MONSTERCAT, (int)SM_MONSTERCAT);
-    obs_property_list_add_int(filter, T_FILTER_SGS, (int)SM_SGS);
+//    obs_property_list_add_int(filter, T_FILTER_NONE, (int)SM_NONE);
+//    obs_property_list_add_int(filter, T_FILTER_MONSTERCAT, (int)SM_MONSTERCAT);
+//    obs_property_list_add_int(filter, T_FILTER_SGS, (int)SM_SGS);
 
     obs_property_set_visible(obs_properties_add_float_slider(props, S_FILTER_STRENGTH, T_FILTER_STRENGTH, 1, 1.5, 0.01),
                              false);
-    obs_property_set_visible(obs_properties_add_int(props, S_SGS_POINTS, T_SGS_POINTS, 1, 32, 1), false);
-    obs_property_set_visible(obs_properties_add_int(props, S_SGS_PASSES, T_SGS_PASSES, 1, 32, 1), false);
+//    obs_property_set_visible(obs_properties_add_int(props, S_SGS_POINTS, T_SGS_POINTS, 1, 32, 1), false);
+//    obs_property_set_visible(obs_properties_add_int(props, S_SGS_PASSES, T_SGS_PASSES, 1, 32, 1), false);
 
-    obs_properties_add_color(props, S_COLOR, T_COLOR);
+//    obs_properties_add_color(props, S_COLOR, T_COLOR);
 
     /* Bar settings */
-    auto *w = obs_properties_add_int(props, S_BAR_WIDTH, T_BAR_WIDTH, 1, UINT16_MAX, 1);
-    auto *h = obs_properties_add_int(props, S_BAR_HEIGHT, T_BAR_HEIGHT, 10, UINT16_MAX, 1);
-    auto *s = obs_properties_add_int(props, S_BAR_SPACE, T_BAR_SPACING, 0, UINT16_MAX, 1);
-    auto *sr = obs_properties_add_int(props, S_SAMPLE_RATE, T_SAMPLE_RATE, 128, UINT16_MAX, 10);
-    auto *rounding = obs_properties_add_bool(props, S_CORNER_ROUNDING, T_CORNER_ROUNDING);
-    auto *points = obs_properties_add_int(props, S_CORNER_POINTS, T_CORNER_POINTS, 2, 25, 1);
-    auto *radius = obs_properties_add_float(props, S_CORNER_RADIUS, T_CORNER_RADIUS, 0.1, 100, 0.1);
+    //auto *w = obs_properties_add_int(props, S_BAR_WIDTH, T_BAR_WIDTH, 1, UINT16_MAX, 1);
+    //auto *h = obs_properties_add_int(props, S_BAR_HEIGHT, T_BAR_HEIGHT, 10, UINT16_MAX, 1);
+    //auto *s = obs_properties_add_int(props, S_BAR_SPACE, T_BAR_SPACING, 0, UINT16_MAX, 1);
+    //auto *points = obs_properties_add_int(props, S_CORNER_POINTS, T_CORNER_POINTS, 2, 25, 1);
+    //auto *radius = obs_properties_add_float(props, S_CORNER_RADIUS, T_CORNER_RADIUS, 0.1, 100, 0.1);
 
-    obs_property_int_set_suffix(sr, " Hz");
-    obs_property_int_set_suffix(w, " Pixel");
-    obs_property_int_set_suffix(h, " Pixel");
-    obs_property_int_set_suffix(s, " Pixel");
-    obs_property_float_set_suffix(radius, "%");
+    //obs_property_int_set_suffix(w, " Lutins");
+    //obs_property_int_set_suffix(h, " Lutins");
+    //obs_property_int_set_suffix(s, " Pixel");
+    //obs_property_float_set_suffix(radius, "%");
 
-    obs_property_set_visible(sr, false); /* Sample rate is only needed for fifo */
-    obs_property_set_visible(points, false);
-    obs_property_set_visible(radius, false);
-    obs_property_set_modified_callback(rounding, use_rounded_corners_changed);
+    //obs_property_set_visible(points, false);
+    //obs_property_set_visible(radius, false);
 
     /* Circle settings */
-    auto *offset = obs_properties_add_float(props, S_OFFSET, T_OFFSET, -360, 360, 0.1);
-    auto *padding = obs_properties_add_float(props, S_PADDING, T_PADDING, -100, 100, 0.1);
-    obs_property_float_set_suffix(offset, "°");
-    obs_property_float_set_suffix(padding, "%");
-
-    obs_property_set_visible(offset, false);
-    obs_property_set_visible(padding, false);
+//    auto *offset = obs_properties_add_float(props, S_OFFSET, T_OFFSET, -360, 360, 0.1);
+//    auto *padding = obs_properties_add_float(props, S_PADDING, T_PADDING, -100, 100, 0.1);
+//    obs_property_float_set_suffix(offset, "°");
+//    obs_property_float_set_suffix(padding, "%");
+//
+//    obs_property_set_visible(offset, false);
+//    obs_property_set_visible(padding, false);
 
     /* Wire settings */
-    auto *wm = obs_properties_add_list(props, S_WIRE_MODE, T_WIRE_MODE, OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
-    auto *th = obs_properties_add_int(props, S_WIRE_THICKNESS, T_WIRE_THICKNESS, 2, 0xffff, 1);
-    obs_property_int_set_suffix(th, " Pixel");
-
-    obs_property_list_add_int(wm, T_WIRE_MODE_THIN, WM_THIN);
-    obs_property_list_add_int(wm, T_WIRE_MODE_THICK, WM_THICK);
-    obs_property_list_add_int(wm, T_WIRE_MODE_FILL, WM_FILL);
-    obs_property_list_add_int(wm, T_WIRE_MODE_FILL_INVERTED, WM_FILL_INVERTED);
-    obs_property_set_visible(wm, false);
-    obs_property_set_visible(th, false);
-    obs_property_set_modified_callback(wm, wire_mode_changed);
+//    auto *wm = obs_properties_add_list(props, S_WIRE_MODE, T_WIRE_MODE, OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
+//    auto *th = obs_properties_add_int(props, S_WIRE_THICKNESS, T_WIRE_THICKNESS, 2, 0xffff, 1);
+//    obs_property_int_set_suffix(th, " Pixel");
+//
+//    obs_property_list_add_int(wm, T_WIRE_MODE_THIN, WM_THIN);
+//    obs_property_list_add_int(wm, T_WIRE_MODE_THICK, WM_THICK);
+//    obs_property_list_add_int(wm, T_WIRE_MODE_FILL, WM_FILL);
+//    obs_property_list_add_int(wm, T_WIRE_MODE_FILL_INVERTED, WM_FILL_INVERTED);
+//    obs_property_set_visible(wm, false);
+//    obs_property_set_visible(th, false);
+//    obs_property_set_modified_callback(wm, wire_mode_changed);
 
     /* Scale stuff */
-    auto auto_scale = obs_properties_add_bool(props, S_AUTO_SCALE, T_AUTO_SCALE);
-    obs_property_set_modified_callback(auto_scale, use_auto_scale_changed);
+//    auto auto_scale = obs_properties_add_bool(props, S_AUTO_SCALE, T_AUTO_SCALE);
+//    obs_property_set_modified_callback(auto_scale, use_auto_scale_changed);
     obs_properties_add_float_slider(props, S_SCALE_SIZE, T_SCALE_SIZE, 0.001, 2, 0.001);
-    obs_properties_add_float_slider(props, S_SCALE_BOOST, T_SCALE_BOOST, 0.001, 100, 0.001);
+//    obs_properties_add_float_slider(props, S_SCALE_BOOST, T_SCALE_BOOST, 0.001, 100, 0.001);
 
     /* Smoothing stuff */
     obs_properties_add_float_slider(props, S_GRAVITY, T_GRAVITY, 0, 1, 0.01);
@@ -393,58 +388,38 @@ obs_properties_t *get_properties_for_visualiser(void *data)
     obs_property_set_visible(obs_properties_add_float_slider(props, S_FALLOFF, T_FALLOFF, 0, 2, 0.01), false);
 
     obs_property_list_add_string(src, T_AUDIO_SOURCE_NONE, defaults::audio_source);
-#ifdef LINUX
-    /* Add MPD stuff */
-    obs_property_list_add_string(src, T_SOURCE_MPD, "mpd");
-    auto *path = obs_properties_add_path(props, S_FIFO_PATH, T_FIFO_PATH, OBS_PATH_FILE, fifo_filter, "");
-    obs_property_set_visible(path, false);
-    obs_properties_add_bool(props, S_AUTO_CLEAR, T_AUTO_CLEAR);
-#endif
 
-    auto *log_freq = obs_properties_add_bool(props, S_LOG_FREQ_SCALE, T_LOG_FREQ_SCALE);
-    obs_property_set_modified_callback(log_freq, log_freq_changed);
+//    auto *log_freq = obs_properties_add_bool(props, S_LOG_FREQ_SCALE, T_LOG_FREQ_SCALE);
+//    obs_property_set_modified_callback(log_freq, log_freq_changed);
 
-    auto *log_freq_quality = obs_properties_add_list(props, S_LOG_FREQ_SCALE_QUALITY, T_LOG_FREQ_SCALE_QUAL,
-                                                     OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(log_freq_quality, T_LOG_FREQ_SCALE_QUAL_FAST, LFQ_FAST);
-    obs_property_list_add_int(log_freq_quality, T_LOG_FREQ_SCALE_QUAL_PRECISE, LFQ_PRECISE);
-    // FIXME This setting makes no sense with current implementation.
-    //
-    // Performing a DFT requires input buffer of specific length. Higher quality DFTs require
-    // longer input buffer - a classic "sacrifice X for better Y" scenario.
-    //
-    // Unfortunately, right now Spectralizer creates a spectrum directly from FFTW output and thus
-    // sample detail has to be directly tied to OBS's ticks and audio frequency. Increasing detail
-    // leaves part of input buffer empty, which makes the result invalid - see
-    // obs_internal_source::update() comment as well.
-    //
-    // Solution would be to double-buffer FFTW results and interpolate on OBS ticks in between the
-    // results. This would require reworking spectrum_visualizer.cpp code and most probably would
-    // introduce latency between played audio and displayed spectrum - needs further checking.
-    //obs_property_set_visible(log_freq_quality, defaults::log_freq_scale);
-    obs_property_set_visible(log_freq_quality, false);
+//    auto *log_freq_quality = obs_properties_add_list(props, S_LOG_FREQ_SCALE_QUALITY, T_LOG_FREQ_SCALE_QUAL,
+//                                                     OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
+//    obs_property_list_add_int(log_freq_quality, T_LOG_FREQ_SCALE_QUAL_FAST, LFQ_FAST);
+//    obs_property_list_add_int(log_freq_quality, T_LOG_FREQ_SCALE_QUAL_PRECISE, LFQ_PRECISE);
+//
+//    obs_property_set_visible(log_freq_quality, false);
 
-    auto *log_freq_start =
-        obs_properties_add_float_slider(props, S_LOG_FREQ_SCALE_START, T_LOG_FREQ_SCALE_START, 20.0, 100.0, 0.1);
-    obs_property_float_set_suffix(log_freq_start, " Hz");
-    obs_property_set_visible(log_freq_start, defaults::log_freq_scale);
+//    auto *log_freq_start =
+//        obs_properties_add_float_slider(props, S_LOG_FREQ_SCALE_START, T_LOG_FREQ_SCALE_START, 20.0, 100.0, 0.1);
+//    obs_property_float_set_suffix(log_freq_start, " Hz");
+//    obs_property_set_visible(log_freq_start, defaults::log_freq_scale);
 
-    auto *log_freq_use_hpf = obs_properties_add_bool(props, S_LOG_FREQ_SCALE_USE_HPF, T_LOG_FREQ_SCALE_USE_HPF);
-    obs_property_set_visible(log_freq_use_hpf, defaults::log_freq_scale);
-    obs_property_set_modified_callback(log_freq_use_hpf, log_freq_use_hpf_changed);
+//    auto *log_freq_use_hpf = obs_properties_add_bool(props, S_LOG_FREQ_SCALE_USE_HPF, T_LOG_FREQ_SCALE_USE_HPF);
+//    obs_property_set_visible(log_freq_use_hpf, defaults::log_freq_scale);
+//    obs_property_set_modified_callback(log_freq_use_hpf, log_freq_use_hpf_changed);
 
     obs_property_set_visible(obs_properties_add_float_slider(props, S_LOG_FREQ_SCALE_HPF_CURVE,
                                                              T_LOG_FREQ_SCALE_HPF_CURVE, 2.0,
                                                              defaults::log_freq_hpf_curve_max, 0.1),
                              defaults::log_freq_scale && defaults::log_freq_use_hpf);
 
-    auto *stereo = obs_properties_add_bool(props, S_STEREO, T_STEREO);
-    auto *space = obs_properties_add_int(props, S_STEREO_SPACE, T_STEREO_SPACE, -UINT16_MAX, UINT16_MAX, 1);
-    obs_property_int_set_suffix(space, " Pixel");
-    auto *dt = obs_properties_add_int(props, S_DETAIL, T_DETAIL, 1, UINT16_MAX, 1);
-    obs_property_int_set_suffix(dt, " Bins");
-    obs_property_set_visible(space, false);
-    obs_property_set_modified_callback(stereo, stereo_changed);
+//    auto *stereo = obs_properties_add_bool(props, S_STEREO, T_STEREO);
+//    auto *space = obs_properties_add_int(props, S_STEREO_SPACE, T_STEREO_SPACE, -UINT16_MAX, UINT16_MAX, 1);
+//    obs_property_int_set_suffix(space, " Pixel");
+//    auto *dt = obs_properties_add_int(props, S_DETAIL, T_DETAIL, 1, UINT16_MAX, 1);
+//    obs_property_int_set_suffix(dt, " Bins");
+//    obs_property_set_visible(space, false);
+//    obs_property_set_modified_callback(stereo, stereo_changed);
 
     enum_data d;
     d.list = src;
@@ -452,8 +427,10 @@ obs_properties_t *get_properties_for_visualiser(void *data)
     obs_enum_sources(add_source, &d);
 
     /* UDP Settings */
-    auto *udp_ip = obs_properties_add_text(props, S_UDP_IP, T_UDP_IP, OBS_TEXT_DEFAULT);
-    auto udp_port = obs_properties_add_int(props, S_UDP_PORT, T_UDP_PORT, 1024, UINT16_MAX, 1);
+//    auto *udp_ip = obs_properties_add_text(props, S_UDP_IP, T_UDP_IP, OBS_TEXT_DEFAULT);
+//    auto udp_port = obs_properties_add_int(props, S_UDP_PORT, T_UDP_PORT, 1024, UINT16_MAX, 1);
+
+    //auto *password = obs_properties_add_text(props, S_UDP_IP, "So much mystère", OBS_TEXT_DEFAULT);
 
     return props;
 }
@@ -473,7 +450,7 @@ void register_visualiser()
     si.destroy = [](void *data) { delete reinterpret_cast<visualizer_source *>(data); };
     si.get_width = [](void *data) { return reinterpret_cast<visualizer_source *>(data)->get_width(); };
     si.get_height = [](void *data) { return reinterpret_cast<visualizer_source *>(data)->get_height(); };
-    si.icon_type = OBS_ICON_TYPE_AUDIO_OUTPUT;
+    si.icon_type = OBS_ICON_TYPE_MEDIA;
     si.get_defaults = [](obs_data_t *settings) {
         obs_data_set_default_int(settings, S_COLOR, 0xFFFFFFFF);
         obs_data_set_default_int(settings, S_DETAIL, defaults::detail);
@@ -504,6 +481,8 @@ void register_visualiser()
         obs_data_set_default_bool(settings, S_CORNER_ROUNDING, false);
         obs_data_set_default_int(settings, S_CORNER_POINTS, defaults::corner_points);
         obs_data_set_default_double(settings, S_CORNER_RADIUS, 0.5f);
+        obs_data_set_default_string(settings, S_UDP_IP, "255.255.255.255");
+        obs_data_set_default_int(settings, S_UDP_PORT, 28451);
     };
 
     si.update = [](void *data, obs_data_t *settings) { reinterpret_cast<visualizer_source *>(data)->update(settings); };
