@@ -131,8 +131,8 @@
 #define S_CORNER_ROUNDING               "round_corners"
 #define S_CORNER_RADIUS                 "corner_radius"
 #define S_CORNER_POINTS                 "corner_points"
-#define S_UDP_IP                        T_("udp_ip")
-#define S_UDP_PORT                      T_("udp_port")
+#define S_UDP_IP                        "udp_ip"
+#define S_UDP_PORT                      "udp_port"
 
 enum visual_mode
 {
