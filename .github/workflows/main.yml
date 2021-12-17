@@ -10,6 +10,7 @@ on:
       - '**.ini'
     branches:
     - master
+    - noel
     tags:
     - "v*"
 jobs:
