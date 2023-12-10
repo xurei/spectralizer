@@ -1,6 +1,13 @@
-cmake_minimum_required(VERSION 3.5)
+# --- Detect if the plugin is build out of tree or not ---
+if(CMAKE_PROJECT_NAME STREQUAL "obs-studio")
+  set(BUILD_OUT_OF_TREE OFF)
+else()
+  set(BUILD_OUT_OF_TREE ON)
+  cmake_minimum_required(VERSION 3.18)
+endif()
+
 project(spectralizer VERSION 1.3.4)
-set(PLUGIN_AUTHOR "univrsal")
+set(PLUGIN_AUTHOR "xurei")
 set(PLUGIN_GIT spectralizer)
 set(LINUX_MAINTAINER_EMAIL "uni@vrsal.cf")
 set(MACOS_BUNDLEID "cf.vrsal.spectralizer")
@@ -29,7 +36,15 @@ if ("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
     add_definitions(-DUNIX=1)
 endif ()
 
-find_package(LibObs REQUIRED)
+if(BUILD_OUT_OF_TREE)
+    find_package(libobs REQUIRED)
+    find_package(obs-frontend-api REQUIRED)
+    include(cmake/ObsPluginHelpers.cmake)
+    set(OBS_FRONTEND_API_NAME "obs-frontend-api")
+else()
+    set(OBS_FRONTEND_API_NAME "frontend-api")
+endif()
+
 find_path(FFTW_INCLUDE_DIRS fftw3.h)
 find_library(FFTW_LIBRARIES fftw3)
 
