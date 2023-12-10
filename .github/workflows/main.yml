@@ -294,7 +294,7 @@ jobs:
       - name: 'Install prerequisite: Pre-built OBS dependencies'
         run: |
           curl -kLO https://github.com/obsproject/obs-deps/releases/download/${{ env.WINDOWS_DEPS_VERSION }}/windows-deps-${{ env.WINDOWS_DEPS_VERSION }}-x64.zip -f --retry 5 -C -
-          7z x windows-deps-${{ env.WINDOWS_DEPS_VERSION }}-${{ matrix.target }}.zip -o"${{ github.workspace }}/cmbuild/deps"
+          7z x windows-deps-${{ env.WINDOWS_DEPS_VERSION }}-x64.zip -o"${{ github.workspace }}/cmbuild/deps"
 #      - name: 'Restore OBS 32-bit build v${{ env.OBS_GIT_TAG }} from cache'
 #        id: build-cache-obs-32
 #        uses: actions/cache@v1
