@@ -57,7 +57,7 @@ inline double lanczos(double t, const int window, uint32_t in_count, const doubl
 {
     double result = 0.0f;
     for (int i = static_cast<int>(t) - window + 1; i < static_cast<int>(t) + window; ++i) {
-        if (i < 0 || i > in_count)
+        if (i < 0 || i > (int)in_count)
             continue; // add nothing if we go out of available freq range
 
         result += in_mags[i] * lanczos_kernel(t - static_cast<double>(i), window);
@@ -81,7 +81,7 @@ spectrum_visualizer::spectrum_visualizer(source::config *cfg)
       m_fftw_plan_right(nullptr),
       m_silent_runs(0u)
 {
-    sock = socket(AF_INET, SOCK_DGRAM, 0);
+    sock = (int) socket(AF_INET, SOCK_DGRAM, 0);
     int one = 1;
     setsockopt(sock, SOL_SOCKET, SO_BROADCAST, (const char *)(&one), 4);
 }

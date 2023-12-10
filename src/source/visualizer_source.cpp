@@ -59,20 +59,20 @@ void visualizer_source::update(obs_data_t *settings)
     std::lock_guard<std::mutex> lock(m_config.value_mutex);
 
     m_config.audio_source_name = obs_data_get_string(settings, S_AUDIO_SOURCE);
-    m_config.sample_rate = obs_data_get_int(settings, S_SAMPLE_RATE);
+    m_config.sample_rate = (uint32_t) obs_data_get_int(settings, S_SAMPLE_RATE);
     m_config.sample_size = m_config.sample_rate / m_config.fps;
     m_config.visual = (visual_mode)(obs_data_get_int(settings, S_SOURCE_MODE));
     m_config.stereo = obs_data_get_bool(settings, S_STEREO);
-    m_config.stereo_space = obs_data_get_int(settings, S_STEREO_SPACE);
-    m_config.color = obs_data_get_int(settings, S_COLOR);
-    m_config.bar_width = obs_data_get_int(settings, S_BAR_WIDTH);
-    m_config.bar_space = obs_data_get_int(settings, S_BAR_SPACE);
-    m_config.detail = obs_data_get_int(settings, S_DETAIL);
+    m_config.stereo_space = (int16_t) obs_data_get_int(settings, S_STEREO_SPACE);
+    m_config.color = (uint32_t) obs_data_get_int(settings, S_COLOR);
+    m_config.bar_width = (uint16_t) obs_data_get_int(settings, S_BAR_WIDTH);
+    m_config.bar_space = (uint16_t) obs_data_get_int(settings, S_BAR_SPACE);
+    m_config.detail = (uint16_t) obs_data_get_int(settings, S_DETAIL);
     m_config.fifo_path = obs_data_get_string(settings, S_FIFO_PATH);
-    m_config.bar_height = obs_data_get_int(settings, S_BAR_HEIGHT);
+    m_config.bar_height = (uint16_t) obs_data_get_int(settings, S_BAR_HEIGHT);
     m_config.smoothing = (smooting_mode)obs_data_get_int(settings, S_FILTER_MODE);
-    m_config.sgs_passes = obs_data_get_int(settings, S_SGS_PASSES);
-    m_config.sgs_points = obs_data_get_int(settings, S_SGS_POINTS);
+    m_config.sgs_passes = (uint32_t) obs_data_get_int(settings, S_SGS_PASSES);
+    m_config.sgs_points = (uint32_t) obs_data_get_int(settings, S_SGS_POINTS);
     m_config.falloff_weight = obs_data_get_double(settings, S_FALLOFF);
     m_config.gravity = obs_data_get_double(settings, S_GRAVITY);
     m_config.mcat_smoothing_factor = obs_data_get_double(settings, S_FILTER_STRENGTH);
@@ -82,21 +82,21 @@ void visualizer_source::update(obs_data_t *settings)
     m_config.scale_boost = obs_data_get_double(settings, S_SCALE_BOOST);
     m_config.scale_size = obs_data_get_double(settings, S_SCALE_SIZE);
     m_config.wire_mode = (wire_mode)obs_data_get_int(settings, S_WIRE_MODE);
-    m_config.wire_thickness = obs_data_get_int(settings, S_WIRE_THICKNESS);
+    m_config.wire_thickness = (uint16_t) obs_data_get_int(settings, S_WIRE_THICKNESS);
     m_config.log_freq_scale = obs_data_get_bool(settings, S_LOG_FREQ_SCALE);
     m_config.log_freq_quality = (log_freq_qual)obs_data_get_int(settings, S_LOG_FREQ_SCALE_QUALITY);
     m_config.log_freq_start = obs_data_get_double(settings, S_LOG_FREQ_SCALE_START);
     m_config.log_freq_use_hpf = obs_data_get_bool(settings, S_LOG_FREQ_SCALE_USE_HPF);
     m_config.log_freq_hpf_curve = obs_data_get_double(settings, S_LOG_FREQ_SCALE_HPF_CURVE);
     m_config.rounded_corners = obs_data_get_bool(settings, S_CORNER_ROUNDING);
-    m_config.corner_radius = obs_data_get_double(settings, S_CORNER_RADIUS) / 100.f;
-    m_config.corner_points = obs_data_get_int(settings, S_CORNER_POINTS);
+    m_config.corner_radius = (float) obs_data_get_double(settings, S_CORNER_RADIUS) / 100.f;
+    m_config.corner_points = (uint16_t) obs_data_get_int(settings, S_CORNER_POINTS);
 
-    m_config.offset = obs_data_get_double(settings, S_OFFSET) / 180.f * M_PI;
-    m_config.padding = obs_data_get_double(settings, S_PADDING) / 100.f; // to %
+    m_config.offset = (float) obs_data_get_double(settings, S_OFFSET) / 180.f * M_PI;
+    m_config.padding = (float) obs_data_get_double(settings, S_PADDING) / 100.f; // to %
 
     m_config.udp_ip = obs_data_get_string(settings, S_UDP_IP);
-    m_config.udp_port = obs_data_get_int(settings, S_UDP_PORT);
+    m_config.udp_port = (uint16_t) obs_data_get_int(settings, S_UDP_PORT);
 
 #ifdef LINUX
     m_config.auto_clear = obs_data_get_bool(settings, S_AUTO_CLEAR);
@@ -171,7 +171,7 @@ void visualizer_source::render(gs_effect_t *effect)
 
 static bool filter_changed(obs_properties_t *props, obs_property_t *, obs_data_t *data)
 {
-    int mode = obs_data_get_int(data, S_FILTER_MODE);
+    int mode = (int) obs_data_get_int(data, S_FILTER_MODE);
     auto *strength = obs_properties_get(props, S_FILTER_STRENGTH);
     auto *sgs_pass = obs_properties_get(props, S_SGS_PASSES);
     auto *sgs_points = obs_properties_get(props, S_SGS_POINTS);

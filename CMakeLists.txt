@@ -77,7 +77,11 @@ if(OS_WINDOWS)
         "${PROJECT_BINARY_DIR}/installer.iss"
     )
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resource.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.rc)
-
+    target_compile_options(${PROJECT_NAME} PRIVATE /WX-)
+    target_link_options(
+        ${PROJECT_NAME}
+        PRIVATE
+        "LINKER:/WX-")
     target_sources(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.rc)
 elseif(OS_MACOS)
