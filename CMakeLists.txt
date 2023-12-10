@@ -96,10 +96,12 @@ target_link_libraries(spectralizer
     ${OBS_FRONTEND_LIB}
     ${spectralizer_PLATFORM_DEPS})
 
-include_directories(${FFTW_INCLUDE_DIRS}
-    "${LIBOBS_INCLUDE_DIR}/../UI/obs-frontend-api"
-    ${LIBOBS_INCLUDE_DIR}
-)
+if(BUILD_OUT_OF_TREE)
+    include_directories(${FFTW_INCLUDE_DIRS}
+        "${LIBOBS_INCLUDE_DIR}/../UI/obs-frontend-api"
+        ${LIBOBS_INCLUDE_DIR}
+    )
+endif()
 
 # Installation stuff
 
@@ -117,9 +119,11 @@ if(WIN32)
         add_definitions(/MP /d2FH4-)
     endif()
 
-    include_directories(
-        "${LIBOBS_INCLUDE_DIR}"
-    )
+    if(BUILD_OUT_OF_TREE)
+        include_directories(
+            "${LIBOBS_INCLUDE_DIR}"
+        )
+    endif()
 
     target_link_libraries(${CMAKE_PROJECT_NAME} wsock32 ws2_32)
 
