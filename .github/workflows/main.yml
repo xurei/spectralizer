@@ -259,26 +259,12 @@ jobs:
         with:
           path: ${{ github.workspace }}
           submodules: 'recursive'
-      - name: 'Checkout OBS'
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
         with:
           repository: obsproject/obs-studio
-          path: ${{ github.workspace }}/obs-studio
+          ref: ${{ env.OBS_VERSION }}
           submodules: 'recursive'
-      - name: 'Get OBS-Studio git info'
-        shell: bash
-        working-directory: ${{ github.workspace }}/obs-studio
-        run: |
-          git fetch --prune --unshallow
-          echo "OBS_GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
-          echo "OBS_GIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "OBS_GIT_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-      - name: 'Checkout last OBS-Studio release (${{ env.OBS_GIT_TAG }})'
-        shell: bash
-        working-directory: ${{ github.workspace }}/obs-studio
-        run: |
-          git checkout ${{ env.OBS_GIT_TAG }}
-          git submodule update
       - name: 'Get ${{ env.project-git }} git info'
         shell: bash
         working-directory: ${{ github.workspace }}
