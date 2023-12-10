@@ -61,15 +61,14 @@ else()
     set(OBS_FRONTEND_API_NAME "frontend-api")
 endif()
 
-find_path(FFTW_INCLUDE_DIRS fftw3.h)
-find_library(FFTW_LIBRARIES fftw3)
-
-target_link_libraries(${PROJECT_NAME}
-    ${FFTW_LIBRARIES}
-)
-include_directories(${FFTW_INCLUDE_DIRS})
+include_directories(fftw3/include)
 
 if(OS_WINDOWS)
+    #find_library(FFTW_LIBRARIES fftw3 REQUIRED)
+    target_link_libraries(${PROJECT_NAME}
+        fftw3/bin/64bit/libfftw3-3.lib
+    )
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:avx2 /O2 /openmp")
     get_filename_component(ISS_FILES_DIR "${CMAKE_BINARY_DIR}\\..\\package" ABSOLUTE)
     file(TO_NATIVE_PATH "${ISS_FILES_DIR}" ISS_FILES_DIR)
@@ -92,6 +91,10 @@ elseif(OS_MACOS)
     configure_file(cmake/bundle/macos/installer-macos.pkgproj.in ${CMAKE_BINARY_DIR}/installer-macos.generated.pkgproj)
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
 elseif(OS_LINUX)
+    find_library(FFTW_LIBRARIES fftw3 REQUIRED)
+    target_link_libraries(${PROJECT_NAME}
+        ${FFTW_LIBRARIES}
+    )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -O3 -fopenmp")
 endif()
 
