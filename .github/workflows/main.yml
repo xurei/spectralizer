@@ -345,12 +345,7 @@ jobs:
           -DENABLE_PLUGINS=TRUE \
           -DDISABLE_PLUGINS=FALSE \
           -DENABLE_BROWSER=FALSE \
-          -DENABLE_WEBSOCKET=FALSE \
-          -DZLIB_INCLUDE="${{ github.workspace }}/build/zlib/distrib/include" \
-          -DZLIB_LIBRARY="${{ github.workspace }}/build/zlib/distrib/lib/zlibstatic.lib" \
-          -DLIBZIP_INCLUDE="${{ github.workspace }}/build/libzip/distrib/include" \
-          -DLIBZIP_INCLUDE_CONF="${{ github.workspace }}/build/libzip/distrib/include" \
-          -DLIBZIP_LIBRARY="${{ github.workspace }}/build/libzip/distrib/lib/zip.lib"
+          -DENABLE_WEBSOCKET=FALSE
 
       - name: 'Build'
         run: msbuild /m /p:Configuration=RelWithDebInfo .\build\obs-studio\obs-studio.sln

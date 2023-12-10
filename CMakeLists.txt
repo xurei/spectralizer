@@ -20,11 +20,6 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set(MACOS_PACKAGE_UUID "90e83546-fa37-453a-9adb-b51149c78df1")
 set(MACOS_INSTALLER_UUID "14c0a640-0656-4528-8243-4a2ab2595dd5")
 
-# libzip
-set(LIBZIP_LIBRARY "" CACHE FILEPATH "Path to libzip library.")
-set(LIBZIP_INCLUDE "" CACHE PATH "Path zo libzip's includes.")
-set(LIBZIP_INCLUDE_CONF "" CACHE PATH "Path zo libzip's includes (config file).")
-
 add_library(${PROJECT_NAME} MODULE)
 
 # configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/version.h)
