@@ -27,11 +27,29 @@ set(LIBZIP_INCLUDE_CONF "" CACHE PATH "Path zo libzip's includes (config file)."
 
 add_library(${PROJECT_NAME} MODULE)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/version.h)
+# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/version.h)
 
 target_sources(${PROJECT_NAME} PRIVATE
-    src/shadertastic.cpp
-    src/version.h
+    src/spectralizer.cpp
+    src/source/visualizer_source.cpp
+    src/source/visualizer_source.hpp
+    src/util/util.hpp
+    src/util/util.cpp
+    src/util/audio/spectrum_visualizer.cpp
+    src/util/audio/spectrum_visualizer.hpp
+    src/util/audio/bar_visualizer.cpp
+    src/util/audio/bar_visualizer.hpp
+    src/util/audio/circle_bar_visualizer.cpp
+    src/util/audio/circle_bar_visualizer.hpp
+    src/util/audio/wire_visualizer.cpp
+    src/util/audio/wire_visualizer.hpp
+    src/util/audio/fifo.cpp
+    src/util/audio/fifo.hpp
+    src/util/audio/obs_internal_source.cpp
+    src/util/audio/obs_internal_source.hpp
+    src/util/audio/audio_visualizer.cpp
+    src/util/audio/audio_visualizer.hpp
+    src/util/audio/audio_source.hpp
 )
 
 if(BUILD_OUT_OF_TREE)
