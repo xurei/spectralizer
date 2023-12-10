@@ -245,10 +245,10 @@ jobs:
     runs-on: [windows-latest]
     env:
       QT_VERSION: '5.10.1'
-      WINDOWS_DEPS_VERSION: '2019'
-      CMAKE_GENERATOR: "Visual Studio 16 2019"
-      CMAKE_SYSTEM_VERSION: "10.0"
-      obs-studio-version: 26.0.2
+      CMAKE_SYSTEM_VERSION: "10.0.18363.657"
+      WINDOWS_DEPS_VERSION: '2022-08-02'
+      CMAKE_GENERATOR: "Visual Studio 17 2022"
+      obs-studio-version: 28.1.2
       project-git: spectralizer
       project-name: spectralizer
     steps:
