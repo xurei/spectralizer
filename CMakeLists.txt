@@ -15,6 +15,8 @@ endif()
 set(PROJECT_FULL_NAME "Spectralizer")
 
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+add_definitions(-DBUILD_TIME="${TODAY}")
+add_definitions(-DSPECTRALIZER_VERSION="${PROJECT_VERSION}")
 
 # Set new UUIDs when you start to create a new plugin.
 set(MACOS_PACKAGE_UUID "90e83546-fa37-453a-9adb-b51149c78df1")
